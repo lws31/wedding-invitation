@@ -127,7 +127,10 @@ export default function WeddingPage() {
   };
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div
+      // style={{ fontFamily: 'var(--font-sans)' }}
+      className="min-h-screen overflow-x-hidden"
+    >
       {/* --- 음악 재생 버튼 --- */}
       <div className="fixed bottom-6 right-6 z-50">
         <audio

@@ -9,6 +9,7 @@ const nanumMyeongjo = Nanum_Myeongjo({
   subsets: ["latin"],
   variable: "--font-myeongjo", // CSS 변수 이름 지정
   display: "swap",
+  preload: true, // 폰트를 최우선으로 불러오도록 강제
 })
 
 // 고딕체
@@ -17,6 +18,7 @@ const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
   variable: "--font-sans",    // CSS 변수 이름 지정
   display: "swap",
+  preload: true, // 폰트를 최우선으로 불러오도록 강제
 });
 
 export const metadata: Metadata = {
