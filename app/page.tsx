@@ -228,7 +228,7 @@ export default function WeddingPage() {
         </div>
 
         <div className="space-y-3">
-          <p className="font-serif font-bold text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
+          <p className="text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
           <p className="text-sm text-stone-500 font-light leading-relaxed mb-6">제주특별자치도 서귀포시 이어도로 96</p>
 
           {/* 길찾기 버튼 추가 */}
