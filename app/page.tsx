@@ -4,40 +4,112 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 export default function WeddingPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // 파일명은 공백 없이 bgm.mp3로 변경하는 것을 추천하지만, 일단 현재 파일명을 유지합니다.
-  const AUDIO_SRC = "/Christina Perri - A Thousand Years.mp3";
+  const AUDIO_SRC = "/sounds/bgm.mp3";
 
-  // --- 1. 자동 재생 로직 ---
+  const LAT = 33.240489;
+  const LNG = 126.516592;
+
   useEffect(() => {
-    const handleAutoPlay = () => {
-      if (audioRef.current && audioRef.current.paused) {
+    const handleVisibilityChange = () => {
+      if (!audioRef.current) return;
+
+      if (document.hidden) {
+        // 탭이 숨겨졌을 때 (백그라운드)
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        // 사용자가 다시 탭으로 돌아왔을 때
+        // 이전에 재생 중이었던 경우에만 다시 재생하고 싶다면 
+        // 별도의 상태(예: wasPlaying)를 관리해야 하지만, 
+        // 보통은 다시 돌아왔을 때 들려주는 것이 자연스럽습니다.
         audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-            removeInteractionListeners();
-          })
-          .catch((err) => console.log("상호작용 대기 중..."));
+          .then(() => setIsPlaying(true))
+          .catch(() => {
+            // 브라우저 정책상 자동 재개가 막힐 수 있으므로 에러 방지 처리만 해둡니다.
+            setIsPlaying(false);
+          });
       }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleAutoPlay = () => {
+      // 이미 재생 중이면 실행 안 함
+      if (!audio.paused) return;
+
+      audio.play()
+        .then(() => {
+          setIsPlaying(true);
+          // 재생 성공 시 모든 이벤트 리스너 제거
+          removeInteractionListeners();
+        })
+        .catch((err) => {
+          // 재생 실패 시 (정책 때문) 계속 대기
+          console.log("상호작용 대기 중...", err);
+        });
     };
 
     const removeInteractionListeners = () => {
       window.removeEventListener("click", handleAutoPlay);
       window.removeEventListener("touchstart", handleAutoPlay);
+      window.removeEventListener("touchmove", handleAutoPlay);
+      window.removeEventListener("touchend", handleAutoPlay);
       window.removeEventListener("scroll", handleAutoPlay);
+      window.removeEventListener("wheel", handleAutoPlay);
     };
 
     window.addEventListener("click", handleAutoPlay);
     window.addEventListener("touchstart", handleAutoPlay);
+    window.addEventListener("touchmove", handleAutoPlay);
+    window.addEventListener("touchend", handleAutoPlay);
     window.addEventListener("scroll", handleAutoPlay);
+    window.addEventListener("wheel", handleAutoPlay);
 
     return () => removeInteractionListeners();
   }, []);
 
-  // --- 2. 재생/일시정지 토글 함수 ---
+  // --- 카카오맵 로드 useEffect ---
+  useEffect(() => {
+    const script = window.kakao;
+    if (script && script.maps) {
+      script.maps.load(() => {
+        const container = document.getElementById("map");
+        const options = {
+          center: new script.maps.LatLng(LAT, LNG),
+          level: 3,
+        };
+        const map = new script.maps.Map(container, options);
+
+        // 마커 생성
+        const markerPosition = new script.maps.LatLng(LAT, LNG);
+        const marker = new script.maps.Marker({
+          position: markerPosition,
+        });
+        marker.setMap(map);
+      });
+    }
+  }, []);
+
+  // --- 재생/일시정지 토글 함수 ---
   const togglePlay = (e: React.MouseEvent) => {
     e.stopPropagation(); // 중요: 클릭 이벤트가 상위(window)로 퍼져 자동재생 로직이 다시 실행되는 것 방지
 
@@ -67,16 +139,22 @@ export default function WeddingPage() {
         <motion.button
           onClick={togglePlay}
           whileTap={{ scale: 0.9 }}
+          // 재생 중일 때 버튼이 살짝 떨리는 애니메이션을 원한다면 animate 설정을 추가할 수 있어.
           className="w-12 h-12 bg-white/90 backdrop-blur-sm border border-stone-200 rounded-full shadow-lg flex items-center justify-center text-stone-600 focus:outline-none"
         >
           {isPlaying ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M5.5 3.5A.5.5 0 0 1 6 4v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5z" />
+            // 음악이 멈췄을 때: 스피커 끄기 아이콘 (직관적으로 소리가 안 남을 알림)
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11 5L6 9H2v6h4l5 4V5z" />
+              <line x1="23" y1="9" x2="17" y2="15" />
+              <line x1="17" y1="9" x2="23" y2="15" />
             </svg>
           ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z" />
-              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+            // 음악이 나오고 있을 때: 음표 아이콘 (음악이 흐르는 느낌)
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
             </svg>
           )}
         </motion.button>
@@ -93,7 +171,7 @@ export default function WeddingPage() {
           <h1 className="text-4xl mt-4 mb-8 font-normal tracking-tight text-stone-800">우석 <span className="text-stone-300 mx-1">&</span> 현주</h1>
           <div className="relative w-[280px] h-[400px] mx-auto shadow-2xl rounded-t-full overflow-hidden border-[6px] border-white">
             <Image
-              src="/main-wedding.jpg"
+              src="/images/main-wedding.png"
               alt="Main Wedding"
               fill
               className="object-cover"
@@ -128,10 +206,10 @@ export default function WeddingPage() {
         <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
         <div className="grid grid-cols-2 gap-1 px-1">
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
-            <Image src="/gallery-1.jpg" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+            <Image src="/images/gallery-1.png" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
-            <Image src="/gallery-2.jpg" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+            <Image src="/images/gallery-2.png" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
         </div>
       </section>
@@ -139,12 +217,27 @@ export default function WeddingPage() {
       {/* 4. Location */}
       <section className="py-24 bg-[#faf9f8] text-center px-6">
         <h3 className="text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Location</h3>
-        <div id="map" className="w-full h-64 bg-white rounded-sm overflow-hidden border border-stone-200 shadow-sm mb-8 flex items-center justify-center">
-          <p className="text-stone-400 text-sm">지도는 API 키 설정 후 표시됩니다.</p>
+
+        {/* 지도가 그려질 영역: 높이를 h-80으로 키우고 내부 텍스트를 로딩 메시지로 변경 */}
+        <div id="map" className="w-full h-80 bg-white rounded-sm overflow-hidden border border-stone-200 shadow-sm mb-8 flex items-center justify-center">
+          <p className="text-stone-400 text-sm italic">지도를 불러오는 중입니다...</p>
         </div>
+
         <div className="space-y-3">
           <p className="font-bold text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
-          <p className="text-sm text-stone-500 font-light leading-relaxed">제주특별자치도 서귀포시 이어도로 96</p>
+          <p className="text-sm text-stone-500 font-light leading-relaxed mb-6">제주특별자치도 서귀포시 이어도로 96</p>
+
+          {/* 길찾기 버튼 추가 */}
+          <div className="flex justify-center gap-3">
+            <a
+              href={`https://map.kakao.com/link/to/법환동 마을회관,${LAT},${LNG}`}
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-2 bg-stone-800 text-white text-[11px] rounded-full shadow-md"
+            >
+              카카오맵 길찾기
+            </a>
+          </div>
         </div>
       </section>
 
