@@ -19,6 +19,7 @@ export default function WeddingPage() {
   const LAT = 33.240489;
   const LNG = 126.516592;
 
+  // --- 오디오 관련 useEffect ---
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!audioRef.current) return;
@@ -126,7 +127,7 @@ export default function WeddingPage() {
   };
 
   return (
-    <div className="bg-[#fdfcfb] min-h-screen font-serif text-[#4a4a4a] overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden">
       {/* --- 음악 재생 버튼 --- */}
       <div className="fixed bottom-6 right-6 z-50">
         <audio
@@ -168,7 +169,7 @@ export default function WeddingPage() {
           transition={{ duration: 1 }}
         >
           <span className="tracking-[0.3em] text-sm text-stone-400 italic">2026 . 04 . 18</span>
-          <h1 className="text-4xl mt-4 mb-8 font-normal tracking-tight text-stone-800">우석 <span className="text-stone-300 mx-1">&</span> 현주</h1>
+          <h1 className="text-4xl mt-4 mb-8 font-serif font-normal tracking-tight text-stone-800">우석 <span className="text-stone-300 mx-1">&</span> 현주</h1>
           <div className="relative w-[280px] h-[400px] mx-auto shadow-2xl rounded-t-full overflow-hidden border-[6px] border-white">
             <Image
               src="/images/main-wedding.png"
@@ -190,8 +191,8 @@ export default function WeddingPage() {
           className="space-y-8 leading-relaxed"
         >
           <div className="inline-block w-px h-12 bg-stone-200 mb-4"></div>
-          <p className="text-lg text-stone-700">소중한 분들을 초대합니다</p>
-          <div className="text-stone-500 font-light space-y-2">
+          <p className="text-lg text-stone-700 font-serif">소중한 분들을 초대합니다</p>
+          <div className="text-stone-500 font-serif font-light space-y-2">
             <p>함께 맞는 아침이 좋아서</p>
             <p>평생을 같이 가기로 했습니다.</p>
             <br />
@@ -224,7 +225,7 @@ export default function WeddingPage() {
         </div>
 
         <div className="space-y-3">
-          <p className="font-bold text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
+          <p className="font-serif font-bold text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
           <p className="text-sm text-stone-500 font-light leading-relaxed mb-6">제주특별자치도 서귀포시 이어도로 96</p>
 
           {/* 길찾기 버튼 추가 */}
@@ -248,11 +249,11 @@ export default function WeddingPage() {
           whileInView={{ opacity: 1, scale: 1 }}
           className="border border-stone-100 p-12 rounded-lg bg-stone-50/30"
         >
-          <p className="text-stone-500 font-light leading-loose text-sm italic">
+          <p className="text-stone-500 font-serif font-light leading-loose text-sm italic">
             축복해 주시는 따뜻한 마음<br />
             잊지 않고 예쁘게 살겠습니다.
           </p>
-          <p className="mt-8 text-stone-800 font-medium">신랑 우석 · 신부 현주 드림</p>
+          <p className="mt-8 text-stone-800 font-serif font-medium">신랑 우석 · 신부 현주 드림</p>
         </motion.div>
       </section>
 

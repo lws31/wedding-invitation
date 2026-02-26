@@ -8,9 +8,9 @@ const config = {
     theme: {
         extend: {
             fontFamily: {
-                // layout.tsx에서 정의한 --font-myeongjo 변수를 font-serif에 연결
+                // 이제 font-serif 클래스를 쓰면 나눔명조가 나옵니다.
                 serif: ["var(--font-myeongjo)", "serif"],
-                // layout.tsx에서 정의한 --font-sans 변수를 font-sans에 연결
+                // 이제 font-sans 클래스를 쓰면 노토산스가 나옵니다.
                 sans: ["var(--font-sans)", "sans-serif"],
             },
         },
