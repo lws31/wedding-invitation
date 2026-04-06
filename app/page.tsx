@@ -191,17 +191,50 @@ export default function WeddingPage() {
           className="space-y-8 leading-relaxed"
         >
           <div className="inline-block w-px h-12 bg-stone-200 mb-4"></div>
-          <p className="text-lg text-stone-700 font-serif">소중한 분들을 초대합니다</p>
-          <div className="text-stone-500 font-serif font-light space-y-2">
-            <p>함께 맞는 아침이 좋아서</p>
-            <p>평생을 같이 가기로 했습니다.</p>
+          <div className="text-stone-500 font-serif font-light space-y-2 whitespace-pre-line">
+            {/* <p>맑고 푸른 봄 하늘 아래,</p>
+            <p>서로를 아끼고 신뢰하며 인생의 길을</p>
+            <p>함께 걷기로 약속했습니다.</p>
             <br />
-            <p>저희의 시작을 응원해주시는</p>
-            <p>소중한 분들을 초대합니다.</p>
+            <p>저희 두 사람의 뜻에 따라 화려한 예식은 생략하고,</p>
+            <p>감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.</p>
+            <br />
+            <p>귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고,</p>
+            <p>격려해 주시면 감사하겠습니다.</p> */}
+            {/* <p>
+              맑고 푸른 봄 하늘 아래,
+              서로를 아끼고 신뢰하며 인생의 길을 함께 걷기로 약속했습니다.
+            </p>
+            <br />
+            <p>
+              저희 두 사람의 뜻에 따라 화려한 예식은 생략하고, 감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.
+            </p>
+            <br />
+            <p>
+              귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고, 격려해 주시면 감사하겠습니다.
+            </p> */}
+            <p>
+              {`맑고 푸른 봄 하늘 아래
+              서로를 아끼고 신뢰하며 인생의 길을
+              함께 걷기로 약속했습니다.
+
+              저희 두 사람의 뜻에 따라 화려한 예식은 생략하고
+              감사한 분들을 모시고 따뜻한 식사 자리를
+              마련하고자 합니다.
+
+              귀한 걸음 하시어
+              저희의 새로운 시작을 축복해 주시고
+              격려해 주시면 감사하겠습니다.`}
+            </p>
           </div>
         </motion.div>
       </section>
-
+      {/*
+맑고 푸른 봄 하늘 아래,
+서로를 아끼고 신뢰하며 인생의 길을 함께 걷기로 약속했습니다.
+저희 두 사람의 뜻에 따라 화려한 예식은 생략하고, 감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.
+귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고, 격려해 주시면 감사하겠습니다.
+ */}
       {/* 3. Gallery */}
       <section className="py-24 bg-white">
         <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
