@@ -212,12 +212,6 @@ export default function WeddingPage() {
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
             <Image src="/images/gallery-2.jpg" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
-        </div>
-      </section>
-
-      <section className="py-24 bg-white">
-        <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
-        <div className="grid grid-cols-2 gap-1 px-1">
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
             <Image src="/images/gallery-3.png" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
