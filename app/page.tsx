@@ -30,8 +30,8 @@ export default function WeddingPage() {
         setIsPlaying(false);
       } else {
         // 사용자가 다시 탭으로 돌아왔을 때
-        // 이전에 재생 중이었던 경우에만 다시 재생하고 싶다면 
-        // 별도의 상태(예: wasPlaying)를 관리해야 하지만, 
+        // 이전에 재생 중이었던 경우에만 다시 재생하고 싶다면
+        // 별도의 상태(예: wasPlaying)를 관리해야 하지만,
         // 보통은 다시 돌아왔을 때 들려주는 것이 자연스럽습니다.
         audioRef.current.play()
           .then(() => setIsPlaying(true))
@@ -127,12 +127,9 @@ export default function WeddingPage() {
   };
 
   return (
-    <div
-      // style={{ fontFamily: 'var(--font-sans)' }}
-      className="min-h-screen overflow-x-hidden"
-    >
+    <div className="min-h-screen overflow-x-hidden">
       {/* --- 음악 재생 버튼 --- */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed top-6 right-6 z-50">
         <audio
           ref={audioRef}
           src={AUDIO_SRC}
@@ -175,7 +172,7 @@ export default function WeddingPage() {
           <h1 className="text-4xl mt-4 mb-8 font-serif font-normal tracking-tight text-stone-800">우석 <span className="text-stone-300 mx-1">&</span> 현주</h1>
           <div className="relative w-[280px] h-[400px] mx-auto shadow-2xl rounded-t-full overflow-hidden border-[6px] border-white">
             <Image
-              src="/images/main-wedding.png"
+              src="/images/main-wedding.jpg"
               alt="Main Wedding"
               fill
               className="object-cover"
@@ -210,10 +207,22 @@ export default function WeddingPage() {
         <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
         <div className="grid grid-cols-2 gap-1 px-1">
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
-            <Image src="/images/gallery-1.png" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+            <Image src="/images/gallery-1.jpg" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
-            <Image src="/images/gallery-2.png" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+            <Image src="/images/gallery-2.jpg" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 bg-white">
+        <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
+        <div className="grid grid-cols-2 gap-1 px-1">
+          <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
+            <Image src="/images/gallery-3.png" alt="Gallery 1" fill className="object-cover hover:scale-105 transition-transform duration-700" />
+          </div>
+          <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
+            <Image src="/images/gallery-4.jpg" alt="Gallery 2" fill className="object-cover hover:scale-105 transition-transform duration-700" />
           </div>
         </div>
       </section>
