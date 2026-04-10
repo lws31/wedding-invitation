@@ -10,6 +10,32 @@ declare global {
   }
 }
 
+const AccountItem = ({ title, name, bank, account }: { title: string, name: string, bank: string, account: string }) => {
+  const handleCopy = () => {
+    navigator.clipboard.writeText(account);
+    alert("계좌번호가 복사되었습니다.");
+  };
+
+  return (
+    <div className="flex items-center justify-between py-3 border-stone-100">
+      <div className="text-left">
+        <p className="text-[14px] text-stone-900 font-semibold">
+          <span className="text-stone-500 mr-2 font-normal">{title}</span> {name}
+        </p>
+        <p className="text-[13px] text-stone-700 font-medium mt-1.5">
+          {bank} <span className="ml-1 tracking-tight">{account}</span>
+        </p>
+      </div>
+      <button
+        onClick={handleCopy}
+        className="px-3 py-1.5 border border-stone-300 text-[10px] text-stone-600 rounded-sm bg-white active:bg-stone-100 transition-colors shadow-sm"
+      >
+        계좌복사
+      </button>
+    </div>
+  );
+};
+
 export default function WeddingPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -161,7 +187,7 @@ export default function WeddingPage() {
         </motion.button>
       </div>
 
-      {/* 1. Hero Section */}
+      {/* Hero Section */}
       <section className="relative h-screen flex flex-col items-center justify-center text-center p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -182,7 +208,7 @@ export default function WeddingPage() {
         </motion.div>
       </section>
 
-      {/* 2. Invitation */}
+      {/* Invitation */}
       <section className="py-32 px-8 text-center bg-white">
         <motion.div
           initial={{ opacity: 0 }}
@@ -190,35 +216,15 @@ export default function WeddingPage() {
           transition={{ duration: 1.5 }}
           className="space-y-8 leading-relaxed"
         >
-          <div className="inline-block w-px h-12 bg-stone-200 mb-4"></div>
+          <div className="inline-block w-px h-24 bg-stone-200 mb-4"></div>
           <div className="text-stone-500 font-serif font-light space-y-2 whitespace-pre-line">
-            {/* <p>맑고 푸른 봄 하늘 아래,</p>
-            <p>서로를 아끼고 신뢰하며 인생의 길을</p>
-            <p>함께 걷기로 약속했습니다.</p>
-            <br />
-            <p>저희 두 사람의 뜻에 따라 화려한 예식은 생략하고,</p>
-            <p>감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.</p>
-            <br />
-            <p>귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고,</p>
-            <p>격려해 주시면 감사하겠습니다.</p> */}
-            {/* <p>
-              맑고 푸른 봄 하늘 아래,
-              서로를 아끼고 신뢰하며 인생의 길을 함께 걷기로 약속했습니다.
-            </p>
-            <br />
-            <p>
-              저희 두 사람의 뜻에 따라 화려한 예식은 생략하고, 감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.
-            </p>
-            <br />
-            <p>
-              귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고, 격려해 주시면 감사하겠습니다.
-            </p> */}
             <p>
               {`맑고 푸른 봄 하늘 아래
               서로를 아끼고 신뢰하며 인생의 길을
               함께 걷기로 약속했습니다.
 
-              저희 두 사람의 뜻에 따라 화려한 예식은 생략하고
+              저희 두 사람의 뜻에 따라
+              화려한 예식은 생략하고
               감사한 분들을 모시고 따뜻한 식사 자리를
               마련하고자 합니다.
 
@@ -229,14 +235,44 @@ export default function WeddingPage() {
           </div>
         </motion.div>
       </section>
-      {/*
-맑고 푸른 봄 하늘 아래,
-서로를 아끼고 신뢰하며 인생의 길을 함께 걷기로 약속했습니다.
-저희 두 사람의 뜻에 따라 화려한 예식은 생략하고, 감사한 분들을 모시고 따듯한 식사 자리를 마련하고자 합니다.
-귀한 걸음 하시어 저희의 새로운 시작을 축복해 주시고, 격려해 주시면 감사하겠습니다.
- */}
-      {/* 3. Gallery */}
-      <section className="py-24 bg-white">
+
+      {/* Location */}
+      <section className="py-24 bg-[#faf9f8] text-center px-6">
+        {/* 상단 영문 타이틀 */}
+        <h3 className="text-stone-400 tracking-[0.2em] text-xs mb-2 uppercase font-light">
+          Location
+        </h3>
+
+        {/* 추가된 국문 타이틀: 명조체로 우아하게 표현 */}
+        <h2 className="text-stone-800 font-serif text-2xl mb-12 tracking-tight">
+          오시는 길
+        </h2>
+
+        {/* 지도가 그려질 영역 */}
+        <div id="map" className="w-full h-80 bg-white rounded-sm overflow-hidden border border-stone-200 shadow-sm mb-8 flex items-center justify-center">
+          <p className="text-stone-400 text-sm italic">지도를 불러오는 중입니다...</p>
+        </div>
+
+        <div className="space-y-3">
+          <p className="text-xl text-stone-800 tracking-tight font-medium">법환동 마을회관</p>
+          <p className="text-sm text-stone-500 font-light leading-relaxed mb-6">제주특별자치도 서귀포시 이어도로 968</p>
+
+          {/* 길찾기 버튼 */}
+          <div className="flex justify-center gap-3">
+            <a
+              href={`https://map.kakao.com/link/to/법환동 마을회관,${LAT},${LNG}`}
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-2.5 bg-stone-800 text-white text-[12px] rounded-full shadow-md active:bg-stone-700 transition-colors"
+            >
+              카카오맵 길찾기
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="pt-24 bg-white">
         <h3 className="text-center text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Gallery</h3>
         <div className="grid grid-cols-2 gap-1 px-1">
           <div className="relative aspect-[3/4] overflow-hidden bg-stone-100">
@@ -254,34 +290,7 @@ export default function WeddingPage() {
         </div>
       </section>
 
-      {/* 4. Location */}
-      <section className="py-24 bg-[#faf9f8] text-center px-6">
-        <h3 className="text-stone-400 tracking-[0.2em] text-xs mb-12 uppercase font-light">Location</h3>
-
-        {/* 지도가 그려질 영역: 높이를 h-80으로 키우고 내부 텍스트를 로딩 메시지로 변경 */}
-        <div id="map" className="w-full h-80 bg-white rounded-sm overflow-hidden border border-stone-200 shadow-sm mb-8 flex items-center justify-center">
-          <p className="text-stone-400 text-sm italic">지도를 불러오는 중입니다...</p>
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-xl text-stone-800 tracking-tight">법환동 마을회관</p>
-          <p className="text-sm text-stone-500 font-light leading-relaxed mb-6">제주특별자치도 서귀포시 이어도로 968</p>
-
-          {/* 길찾기 버튼 추가 */}
-          <div className="flex justify-center gap-3">
-            <a
-              href={`https://map.kakao.com/link/to/법환동 마을회관,${LAT},${LNG}`}
-              target="_blank"
-              rel="noreferrer"
-              className="px-6 py-2 bg-stone-800 text-white text-[11px] rounded-full shadow-md"
-            >
-              카카오맵 길찾기
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Closing Mention */}
+      {/* Closing Mention */}
       <section className="py-32 bg-white text-center px-8">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
@@ -296,8 +305,40 @@ export default function WeddingPage() {
         </motion.div>
       </section>
 
+      {/* Accounts */}
+      <section className="py-24 bg-[#faf9f8] px-8 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <div className="mb-8">
+            <h3 className="text-stone-600 font-serif text-[15px] mb-2 leading-relaxed">
+              참석이 어려우신 분들을 위해 기재했습니다
+            </h3>
+            <p className="text-stone-400 font-serif text-[13px] font-light italic">
+              진심으로 축하해주셔서 감사합니다
+            </p>
+          </div>
+
+          {/* 신랑측 */}
+          <div className="max-w-md mx-auto">
+            <AccountItem title="신랑" name="이우석" bank="농협" account="302-0158-7309-51" />
+            <AccountItem title="신랑 어머니" name="김위자" bank="농협" account="352-1532-7005-33" />
+          </div>
+
+          <div className="w-full h-px bg-stone-200 my-8 mx-auto"></div>
+
+          {/* 신부측 */}
+          <div className="max-w-md mx-auto">
+            <AccountItem title="신부" name="이현주" bank="농협" account="302-0490-1770-11" />
+            <AccountItem title="신부 아버지" name="이택상" bank="농협" account="302-1053-7482-41" />
+          </div>
+        </motion.div>
+      </section>
+
       {/* Footer */}
-      <footer className="py-12 text-center text-[10px] text-stone-300 tracking-[0.2em] bg-[#faf9f8] uppercase">
+      <footer className="pt-24 pb-8 text-center text-[10px] text-stone-300 tracking-[0.2em] bg-white uppercase">
         Copyright © 2026. All Rights Reserved.
       </footer>
     </div>
